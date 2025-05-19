@@ -8,7 +8,7 @@ const create = async (req: Request, res: Response): Promise<Response> => {
 
   // Check if monsters are provided
   if (!monster1Id || !monster2Id) {
-    return res.status(StatusCodes.BAD_REQUEST).json({
+    return res.status(StatusCodes.NOT_FOUND).json({
       error: 'Both monsters must be defined',
     });
   }
