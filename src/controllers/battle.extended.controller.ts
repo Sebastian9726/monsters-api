@@ -20,14 +20,14 @@ const create = async (req: Request, res: Response): Promise<Response> => {
       error: 'One or both monsters do not exist',
     });
   }
-
+  //shallow copy
   const monsterAData = {
     id: monsterARecord.id,
     hp: monsterARecord.hp,
     attack: monsterARecord.attack,
     defense: monsterARecord.defense,
     speed: monsterARecord.speed,
-    name:monsterARecord.name
+    name: monsterARecord.name,
   };
 
   const monsterBData = {
@@ -36,7 +36,7 @@ const create = async (req: Request, res: Response): Promise<Response> => {
     attack: monsterBRecord.attack,
     defense: monsterBRecord.defense,
     speed: monsterBRecord.speed,
-    name:monsterBRecord.name
+    name: monsterBRecord.name,
   };
 
   let firstAttacker, secondAttacker;
@@ -104,14 +104,9 @@ const create = async (req: Request, res: Response): Promise<Response> => {
       updatedAt: now,
     };
 
-    const battle = await Battle.query().insert(
+    await Battle.query().insert(
       battleData as unknown as PartialModelObject<Battle>
     );
-
-    // Return the battle with related monster data
-    const battleWithRelations = await Battle.query()
-      .findById(battle.id)
-      .withGraphFetched('[monsterARelation, monsterBRelation, winnerRelation]');
 
     const response = {
       winner: winnerId === monsterAData.id ? monsterAData : monsterBData,
